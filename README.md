@@ -10,6 +10,8 @@
   - [Demo](#demo)
     - [Create a MAUI Application](#create-a-maui-application)
     - [MauiProgram.cs](#mauiprogramcs)
+      - [ASP.NET Core Web App and in ASP.NET Core Web API's Program.cs file](#aspnet-core-web-app-and-in-aspnet-core-web-apis-programcs-file)
+      - [.NET MAUI App (Preview) MainProgram.cs file](#net-maui-app-preview-mainprogramcs-file)
   - [Complete Code](#complete-code)
   - [Resources](#resources)
 
@@ -159,7 +161,44 @@ Now you should be able to build the solution with no errors.
 
 ### MauiProgram.cs
 
-In the default MainProgram.cs file, you can see that a MauiAppBuilder is being created to be able to configure fonts, resources and services.
+Traditionally, the _host_ is being created in the Program.cs file, as you may remember it from ASP.NET Core Web App as well as in ASP.NET Core Web API applications.
+
+#### ASP.NET Core Web App and in ASP.NET Core Web API's Program.cs file
+
+```csharp
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WebApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+}
+```
+
+#### .NET MAUI App (Preview) MainProgram.cs file
+
+In the case of MAUI applications, the _host_ is being created in the MainProgram.cs file.
+
+In the MainProgram.cs file, you can see that a MauiAppBuilder is being created to be able to configure fonts, resources and services.
 
 ```csharp
 namespace MauiProgram;
@@ -182,9 +221,11 @@ public static class MauiProgram
 }
 ```
 
-All this is thanks to the MAUI Template including the Microsoft.Maui.Extensions NuGet package, which includes dependencies to .NET6, Android, iOS, Mac Catalyst, Tizen, and Windows. Those dependencies allow us to use Dependency Injection, Logging, and Interop services, as mentioned before.
+All this is available thanks to the MAUI Template including the Microsoft.Maui.Extensions NuGet package, which includes dependencies to .NET6, Android, iOS, Mac Catalyst, Tizen, and Windows. Those dependencies allow us to use Dependency Injection, Logging, and Interop services, as mentioned before.
 
-![Dependencies](images/2c5bb5fc953b94dbc22a99e65594c6bc8904841111e3f5d6645674402943867a.png)  
+![Dependencies](images/2c5bb5fc953b94dbc22a99e65594c6bc8904841111e3f5d6645674402943867a.png)
+
+>:exclamation: Is important to mention than the _host_ has a container with a collection of hosted services, so when the _host_ starts, it calls `IHostedService.StartAsync` on any class implementing the `IHostedService` interface.
 
 ## Complete Code
 
