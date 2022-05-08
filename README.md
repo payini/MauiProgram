@@ -1,6 +1,7 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
   - [MAUIProgram](#mauiprogram)
   - [Prerequisites](#prerequisites)
     - [Visual Studio 2022 Preview](#visual-studio-2022-preview)
@@ -8,14 +9,27 @@
     - [MAUI Templates Missing](#maui-templates-missing)
   - [Demo](#demo)
     - [Create a MAUI Application](#create-a-maui-application)
+    - [MauiProgram.cs](#mauiprogramcs)
   - [Complete Code](#complete-code)
   - [Resources](#resources)
 
+## Introduction
+
+In this demo we are going to cover what is in the MauiProgram class, how does it work, why it works, and what are the benefits of using it.
+
 ## MAUIProgram
 
-ADD TEXT HERE -----------------------------
+MAUI applications are bootstrapped using a _host_. The _host_ allows applications to be initialized from a single location, as well as configure services, libraries, resources, etc. just like in .NET Core applications.
+
+The _host_ also encapsulates app's resources, and lifetime like Dependency Injection, Logging, Configuration, and App shutdown.
+
+In the case of MAUI applications, the specific _host_ utilized is a [.NET Generic Host](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host), which is also used in other type of applications.
+
+In the demo, we will cover how the _host_ works and how to configure it, as well as understanding of why this components work and what is needed to be able to use them.
 
 ## Prerequisites
+
+The following prerequisites are needed for this demo.
 
 ### Visual Studio 2022 Preview
 
@@ -109,7 +123,7 @@ Template Name                                  Short Name        Language  Tags
 .NET MAUI ResourceDictionary (XAML) (Preview)  maui-dict-xaml    [C#]      MAUI/Android/iOS/macOS/Mac Catalyst/WinUI/Xaml/Code
 ```
 
-:exclamation: MAUI templates are back!
+:exclamation: Just like that, MAUI templates are back!
 
 ![MAUI Templates Installed](images/60c7f22f3523fc664ca5a92b3a8643d015c43a1058a719cc860e2ff625163174.png)  
 
@@ -117,7 +131,9 @@ Now we can proceed with the demo.
 
 ## Demo
 
-The following demo is a MAUI application where I will show you the new MAUIProgram.cs changes.
+The following demo is a MAUI application where I will dive in to the MAUIProgram.cs file, and show you why this is important, and what can you do with it.
+
+The first step, as usual, is to create our demo application.
 
 ### Create a MAUI Application
 
@@ -125,7 +141,7 @@ The following demo is a MAUI application where I will show you the new MAUIProgr
 
 ![Configure your new project](images/dda78b72379639040f37e7b5f1ab9556da96a9d20b306822f1df81229ea4fc68.png)  
 
-First thing we notice, is that the project will not build.
+They first thing we notice, is that our project will not build.
 
 ![Project won't build](images/e870be90aae36d664ac9c90568f28b22fd1a63168b7f101c62ec55b3a33a9f24.png)
 
@@ -137,6 +153,39 @@ After spending a couple of hours trying to get my environment back in a working 
 
 ![.NET SDK 7.0 Uninstall Successfully Completed](images/20e712d43e5a9f0734143cd6417b5ac4438b15851237271f88ca43882b82e3a5.png)  
 
+Now you should be able to build the solution with no errors.
+
+![Build Succeeded](images/09e67b090ebaf9aaf7ec40e4b71a3673d7667f9fd27e8f77e87f397d2d059916.png)  
+
+### MauiProgram.cs
+
+In the default MainProgram.cs file, you can see that a MauiAppBuilder is being created to be able to configure fonts, resources and services.
+
+```csharp
+namespace MauiProgram;
+
+public static class MauiProgram
+{
+	public static MauiApp CreateMauiApp()
+	{
+		var builder = MauiApp.CreateBuilder();
+		builder
+			.UseMauiApp<App>()
+			.ConfigureFonts(fonts =>
+			{
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			});
+
+		return builder.Build();
+	}
+}
+```
+
+All this is thanks to the MAUI Template including the Microsoft.Maui.Extensions NuGet package, which includes dependencies to .NET6, Android, iOS, Mac Catalyst, Tizen, and Windows. Those dependencies allow us to use Dependency Injection, Logging, and Interop services, as mentioned before.
+
+![Dependencies](images/2c5bb5fc953b94dbc22a99e65594c6bc8904841111e3f5d6645674402943867a.png)  
+
 ## Complete Code
 
 - <https://github.com/payini/MauiProgram>
@@ -146,4 +195,6 @@ After spending a couple of hours trying to get my environment back in a working 
 | Resource Title                   | Url                                                                                   |
 | -------------------------------- | ------------------------------------------------------------------------------------- |
 | The .NET Show with Carl Franklin | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_>            |
-| MAUI Templates Missing           | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4> |
+| MAUI Templates Missing           | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>|
+|Configure fonts, services, and handlers at startup|https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a|
+|.NET Generic Host|https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host|
