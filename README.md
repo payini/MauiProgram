@@ -135,9 +135,7 @@ After spending a couple of hours trying to get my environment back in a working 
 
 ![Uninstall .NET SDK 7.0.100-preview.3.22179.4](images/cbb06a071717e354ee77f2503d9b3303fb5cfe93bb1e11b003270ea4f33d1a39.png)
 
-
-
-
+![.NET SDK 7.0 Uninstall Successfully Completed](images/20e712d43e5a9f0734143cd6417b5ac4438b15851237271f88ca43882b82e3a5.png)  
 
 ## Complete Code
 
@@ -149,4 +147,3 @@ After spending a couple of hours trying to get my environment back in a working 
 | -------------------------------- | ------------------------------------------------------------------------------------- |
 | The .NET Show with Carl Franklin | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_>            |
 | MAUI Templates Missing           | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4> |
-|                                  |                                                                                       |
