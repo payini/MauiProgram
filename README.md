@@ -113,15 +113,31 @@ Template Name                                  Short Name        Language  Tags
 
 ![MAUI Templates Installed](images/60c7f22f3523fc664ca5a92b3a8643d015c43a1058a719cc860e2ff625163174.png)  
 
-![Project won't build](images/b7f1fcaf5395bf125dde2748d9a6544cfa679f720a0c388f014807371a26987a.png)  
-
 Now we can proceed with the demo.
 
 ## Demo
 
-The following demo is a MAUI application where I will show you the new MAUIProgram changes.
+The following demo is a MAUI application where I will show you the new MAUIProgram.cs changes.
 
 ### Create a MAUI Application
+
+![Create a new MAUI Application project](images/83e0873d11ac7a7ad94f4b6b0b2d37a137b324ba2f9dfaccaf70a47ce2b0e44c.png)  
+
+![Configure your new project](images/dda78b72379639040f37e7b5f1ab9556da96a9d20b306822f1df81229ea4fc68.png)  
+
+First thing we notice, is that the project will not build.
+
+![Project won't build](images/e870be90aae36d664ac9c90568f28b22fd1a63168b7f101c62ec55b3a33a9f24.png)
+
+:warning: If you followed my previous video [Native AOT in .NET 7. The .NET Show with Carl Franklin Ep 21](https://www.youtube.com/watch?v=4THfSynZLq8&list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_&index=21) you may run into the same issue, so follow along.
+
+After spending a couple of hours trying to get my environment back in a working state, I finally figured out the reason, the .NET 7 SDK 7.0.100-preview.3.22179.4 needs to be uninstalled. The easiest way to do that, is to run the installer used to install it and click Uninstall.
+
+![Uninstall .NET SDK 7.0.100-preview.3.22179.4](images/cbb06a071717e354ee77f2503d9b3303fb5cfe93bb1e11b003270ea4f33d1a39.png)
+
+
+
+
 
 ## Complete Code
 
