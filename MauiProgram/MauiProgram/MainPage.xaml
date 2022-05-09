@@ -20,26 +20,17 @@
                 HorizontalOptions="Center" />
 
             <Label 
-                Text="Current count: 0"
+                Text="Donut Data: "
                 FontSize="18"
-                FontAttributes="Bold"
                 x:Name="CounterLabel"
                 HorizontalOptions="Center" />
 
             <Button 
                 Text="Click me"
                 FontAttributes="Bold"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
+                SemanticProperties.Hint="Get data"
+                Clicked="OnGetDataClicked"
                 HorizontalOptions="Center" />
-
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                WidthRequest="250"
-                HeightRequest="310"
-                HorizontalOptions="Center" />
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

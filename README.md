@@ -11,7 +11,14 @@
     - [Create a MAUI Application](#create-a-maui-application)
     - [MauiProgram.cs](#mauiprogramcs)
       - [ASP.NET Core Web App and in ASP.NET Core Web API's Program.cs file](#aspnet-core-web-app-and-in-aspnet-core-web-apis-programcs-file)
-      - [.NET MAUI App (Preview) MainProgram.cs file](#net-maui-app-preview-mainprogramcs-file)
+      - [.NET MAUI App (Preview) MainProgram.cs file using .NET 6](#net-maui-app-preview-mainprogramcs-file-using-net-6)
+      - [MauiProgram.cs Explained](#mauiprogramcs-explained)
+      - [So, what else can we do in MauiProgram.cs?](#so-what-else-can-we-do-in-mauiprogramcs)
+        - [Hosting Extension Methods](#hosting-extension-methods)
+        - [Services, Logging and Configuration](#services-logging-and-configuration)
+        - [Adding a Service](#adding-a-service)
+        - [Consuming a Service](#consuming-a-service)
+        - [Add Logging](#add-logging)
   - [Complete Code](#complete-code)
   - [Resources](#resources)
 
@@ -161,7 +168,9 @@ Now you should be able to build the solution with no errors.
 
 ### MauiProgram.cs
 
-Traditionally, the _host_ is being created in the Program.cs file, as you may remember it from ASP.NET Core Web App as well as in ASP.NET Core Web API applications.
+Traditionally, the _host_ is being created in the Program.cs file, as you may remember it from ASP.NET Core Web App as well as in ASP.NET Core Web API applications prior to .NET 6.
+
+The following Program.cs file was generated using .NET Core 3.1, but the same code will be in applications built for .NET 5.
 
 #### ASP.NET Core Web App and in ASP.NET Core Web API's Program.cs file
 
@@ -194,11 +203,13 @@ namespace WebApplication
 }
 ```
 
-#### .NET MAUI App (Preview) MainProgram.cs file
+>:point_up: Notice the use of Startup (which is declared in Startup.cs) to configure services.
 
-In the case of MAUI applications, the _host_ is being created in the MainProgram.cs file.
+#### .NET MAUI App (Preview) MainProgram.cs file using .NET 6
 
-In the MainProgram.cs file, you can see that a MauiAppBuilder is being created to be able to configure fonts, resources and services.
+In the case of MAUI applications, the _host_ is being created in the `MainProgram.cs` file.
+
+You can see that a `MauiAppBuilder` is being created to be able to configure fonts, resources and services, here rather than in the Startup class, which is not included anymore.
 
 ```csharp
 namespace MauiProgram;
@@ -227,15 +238,245 @@ All this is available thanks to the MAUI Template including the Microsoft.Maui.E
 
 >:exclamation: Is important to mention than the _host_ has a container with a collection of hosted services, so when the _host_ starts, it calls `IHostedService.StartAsync` on any class implementing the `IHostedService` interface.
 
+#### MauiProgram.cs Explained
+
+I order to explain the MauiProgram.cs I added comments to the code below.
+
+```csharp
+namespace MauiProgram;
+
+public static class MauiProgram
+{
+	// This method returns the entry point (a MauiApp) and is called from each platform's entry point.
+	public static MauiApp CreateMauiApp()
+	{
+		// MauiApp.CreateBuilder returns a MauiAppBuilder, which is used to configure fonts, resources, and services.
+		var builder = MauiApp.CreateBuilder();
+
+		builder
+			// We give it our main App class, which derives from Application. App is defined in App.xaml.cs.
+			.UseMauiApp<App>()
+			// Default font configuration.
+			.ConfigureFonts(fonts =>
+			{
+				// AddFont takes a required filename (first parameter) and an optional alias for each font.
+				// When using these fonts in XAML you can use them either by filename (without the extension,) or the alias.
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			});
+
+		// The MauiAppBuilder returns a MauiApp application.
+		return builder.Build();
+	}
+}
+```
+
+If you look at the references for CreateMauiApp, you will see how all 5 platforms entry points, are calling this method to get the MauiApp returned.
+
+![CreateMauiApp References](images/9183c0304b8fbf23518a1eb3949ccde1c49c5289ea2139af0f03f3eda3e365e9.png)  
+
+Below is a graphical representation of the dependencies:
+
+![CreateMauiApp Diagram for a Windows Application](images/6ebbb45b9bb2241e63681a0f8b8625330be209350e1c63567941630e786c81bb.png)  
+
+#### So, what else can we do in MauiProgram.cs?
+
+Well, for starters you can configure animations, a container, dispatching, effects, essentials, fonts, image sources, and MAUI handlers, as you can see in the image below.
+
+##### Hosting Extension Methods
+
+![Hosting Extension Methods](images/de9a4498e04c80861da9006293a4659d3d7ff7e9db1c469a13d6a10f629355cc.png)  
+
+With the exception of `ConfigureContainer`, they are all extension methods provided by the `Microsoft.Maui.Hosting` namespace.
+
+You can also register Services, Logging and Configuration via each of those properties.
+
+##### Services, Logging and Configuration
+
+![Services, Logging and Configuration](images/a8ae16e29bb7ffce9c730b49779fe94d583e1a845a7432ad3177d88aeca5baeb.png)  
+
+##### Adding a Service
+
+Let's imagine we need an service that calls some API to get some donuts data. Let's add a file `ApiService.cs` and simply return some Json hard-coded data.
+
+```csharp
+namespace MauiProgram
+{
+    public class ApiService : IApiService
+    {
+        public string GetDonuts()
+        {
+			return @"{
+						""id"": 0001,
+						""type"": ""donut"",
+						""name"": ""Cake"",
+						""ppu"": 0.55,
+						""batters"":
+							{
+								""batter"":
+									[
+										{ ""id"": 1001, ""type"": ""Regular"" },
+										{ ""id"": 1002, ""type"": ""Chocolate"" },
+										{ ""id"": 1003, ""type"": ""Blueberry"" },
+										{ ""id"": 1004, ""type"": ""Devil's Food"" }
+									]
+							},
+						""topping"":
+							[
+								{ ""id"": 5001, ""type"": ""None"" },
+								{ ""id"": 5002, ""type"": ""Glazed"" },
+								{ ""id"": 5005, ""type"": ""Sugar"" },
+								{ ""id"": 5007, ""type"": ""Powdered Sugar"" },
+								{ ""id"": 5006, ""type"": ""Chocolate with Sprinkles"" },
+								{ ""id"": 5003, ""type"": ""Chocolate"" },
+								{ ""id"": 5004, ""type"": ""Maple"" }
+							]
+					}".Replace("\t", string.Empty).Replace("\r\n", string.Empty); // Remove tabs and enters.
+        }
+    }
+}
+```
+
+As you may know, .NET Core provides Dependency Injection out-of-the box, and Services are added using Dependency injection, so let's extract an interface for the `ApiService` and call it `IApiService.cs`.
+
+![Extract Interface](images/539708ff4618ad12beae4cd7fc8f37966eca6f515c8c38daed5f2c5318f77146.png)  
+
+![Extract Interface Dialog](images/67c473814860876a4169614b773662f0e634d155f3000c9ef47b620981c900e5.png)  
+
+That will create the `IApiService` interface, and also will make ApiService implement it.
+
+Now all you have to do is to append the following code to our `MauiProgram.cs` file, in the builder.
+
+```csharp
+.Services
+				.AddSingleton<MainPage>()
+				.AddSingleton<IApiService, ApiService>()
+```
+
+The complete file looks like this:
+
+```csharp
+namespace MauiProgram;
+
+public static class MauiProgram
+{
+	// This method returns the entry point (a MauiApp) and is called from each platform's entry point.
+	public static MauiApp CreateMauiApp()
+	{
+		// MauiApp.CreateBuilder returns a MauiAppBuilder, which is used to configure fonts, resources, and services.
+		var builder = MauiApp.CreateBuilder();
+
+		builder
+			// We give it our main App class, which derives from Application. App is defined in App.xaml.cs.
+			.UseMauiApp<App>()
+			// Default font configuration.
+			.ConfigureFonts(fonts =>
+			{
+				// AddFont takes a required filename (first parameter) and an optional alias for each font.
+				// When using these fonts in XAML you can use them either by filename (without the extension,) or the alias.
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			})
+			// Register services
+			.Services
+				.AddSingleton<MainPage>()
+				.AddSingleton<IApiService, ApiService>();
+
+		// The MauiAppBuilder returns a MauiApp application.
+		return builder.Build();
+	}
+}
+```
+
+Remove the image from `MainPage.xaml` and repurpose the Counter button.
+
+```xaml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiProgram.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="25" Padding="30">
+
+            <Label 
+                Text="Hello, World!"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="Welcome to .NET Multi-platform App UI"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="Donut Data: "
+                FontSize="18"
+                x:Name="CounterLabel"
+                HorizontalOptions="Center" />
+
+            <Button 
+                Text="Click me"
+                FontAttributes="Bold"
+                SemanticProperties.Hint="Get data"
+                Clicked="OnGetDataClicked"
+                HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+```
+
+##### Consuming a Service
+
+In order to consume the service we need to use Dependency Injection to inject the service we registered in the step before.
+
+In `MainPage.xaml.cs` make the following changes:
+
+```csharp
+namespace MauiProgram;
+
+public partial class MainPage : ContentPage
+{
+	private readonly IApiService _apiService;
+
+	public MainPage(IApiService apiService)
+	{
+		_apiService = apiService;
+		InitializeComponent();
+	}
+
+    private void OnGetDataClicked(object sender, EventArgs e)
+	{
+		CounterLabel.Text = $"Donut Data: {_apiService?.GetDonuts()}";
+
+		SemanticScreenReader.Announce(CounterLabel.Text);
+	}
+}
+```
+
+Now you can run the application and see how the ApiService gets injected and can be used to retrieve the data.
+
+![API Service](images/068eb3e6f0d63adca4553bb908dfa918dd0193ffe1b0493536756f99a3751a83.png)  
+
+![Data](images/3a0a0a59faa4e758d006ad9f33d5586b69c85eb3ff5fae1f71aaa85b6d2c1bf5.png)  
+
+![Get Data](images/9f56d687e5c8ca6c65577c03fe8f5cc1f9ba1b73b7fd11e6aa561f81551529aa.png)  
+
+##### Add Logging
+
+
 ## Complete Code
 
 - <https://github.com/payini/MauiProgram>
 
 ## Resources
 
-| Resource Title                   | Url                                                                                   |
-| -------------------------------- | ------------------------------------------------------------------------------------- |
-| The .NET Show with Carl Franklin | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_>            |
-| MAUI Templates Missing           | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>|
-|Configure fonts, services, and handlers at startup|https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a|
-|.NET Generic Host|https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host|
+| Resource Title                                     | Url                                                                                                            |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_>                                     |
+| MAUI Templates Missing                             | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>                          |
+| Configure fonts, services, and handlers at startup | https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a |
+| .NET Generic Host                                  | https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host                                           |

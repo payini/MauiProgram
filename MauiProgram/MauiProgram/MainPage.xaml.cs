@@ -2,17 +2,17 @@
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+	private readonly IApiService _apiService;
 
-	public MainPage()
+	public MainPage(IApiService apiService)
 	{
+		_apiService = apiService;
 		InitializeComponent();
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+    private void OnGetDataClicked(object sender, EventArgs e)
 	{
-		count++;
-		CounterLabel.Text = $"Current count: {count}";
+		CounterLabel.Text = $"Donut Data: {_apiService?.GetDonuts()}";
 
 		SemanticScreenReader.Announce(CounterLabel.Text);
 	}
