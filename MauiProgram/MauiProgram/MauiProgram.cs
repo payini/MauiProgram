@@ -1,4 +1,6 @@
-﻿namespace MauiProgram;
+﻿using Microsoft.Extensions.Logging;
+
+namespace MauiProgram;
 
 public static class MauiProgram
 {
@@ -22,7 +24,12 @@ public static class MauiProgram
 			// Register services
 			.Services
 				.AddSingleton<MainPage>()
-				.AddSingleton<IApiService, ApiService>();
+				.AddSingleton<IApiService, ApiService>()
+				// Add Logging
+				.AddLogging(configure =>
+					{
+						configure.AddDebug();
+					});
 
 		// The MauiAppBuilder returns a MauiApp application.
 		return builder.Build();
