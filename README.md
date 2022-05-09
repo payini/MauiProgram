@@ -16,15 +16,16 @@
       - [So, what else can we do in MauiProgram.cs?](#so-what-else-can-we-do-in-mauiprogramcs)
         - [Hosting Extension Methods](#hosting-extension-methods)
         - [Services, Logging and Configuration](#services-logging-and-configuration)
-        - [Adding a Service](#adding-a-service)
-        - [Consuming a Service](#consuming-a-service)
-        - [Add Logging](#add-logging)
+      - [Adding a Service](#adding-a-service)
+      - [Consuming a Service](#consuming-a-service)
+      - [Add Logging](#add-logging)
+  - [Conclusion](#conclusion)
   - [Complete Code](#complete-code)
   - [Resources](#resources)
 
 ## Introduction
 
-In this demo we are going to cover what is in the MauiProgram class, how does it work, why it works, and what are the benefits of using it.
+In this demo we are going to cover what is in the MauiProgram class, how does it work, why it works, and how can we configure services, such as fonts, and logging.
 
 ## MAUIProgram
 
@@ -141,6 +142,10 @@ Now we can proceed with the demo.
 ## Demo
 
 The following demo is a MAUI application where I will dive in to the MAUIProgram.cs file, and show you why this is important, and what can you do with it.
+
+We are going to configure a service and inject it in a class, using Dependency Injection so it can be used.
+
+We are also going to configure logging and inject it as well to log information to the Output window.
 
 The first step, as usual, is to create our demo application.
 
@@ -295,7 +300,7 @@ You can also register Services, Logging and Configuration via each of those prop
 
 ![Services, Logging and Configuration](images/a8ae16e29bb7ffce9c730b49779fe94d583e1a845a7432ad3177d88aeca5baeb.png)  
 
-##### Adding a Service
+#### Adding a Service
 
 Let's imagine we need an service that calls some API to get some donuts data. Let's add a file `ApiService.cs` and simply return some Json hard-coded data.
 
@@ -331,7 +336,7 @@ namespace MauiProgram
 								{ ""id"": 5003, ""type"": ""Chocolate"" },
 								{ ""id"": 5004, ""type"": ""Maple"" }
 							]
-					}".Replace("\t", string.Empty).Replace("\r\n", string.Empty); // Remove tabs and enters.
+					}".Replace("\t", string.Empty).Replace("\r\n", string.Empty);
         }
     }
 }
@@ -429,7 +434,7 @@ Remove the image from `MainPage.xaml` and repurpose the Counter button.
 </ContentPage>
 ```
 
-##### Consuming a Service
+#### Consuming a Service
 
 In order to consume the service we need to use Dependency Injection to inject the service we registered in the step before.
 
@@ -463,9 +468,13 @@ Now you can run the application and see how the ApiService gets injected and can
 
 ![Data](images/3a0a0a59faa4e758d006ad9f33d5586b69c85eb3ff5fae1f71aaa85b6d2c1bf5.png)  
 
+The application displays the data after the Click me button is pressed.
+
 ![Get Data](images/9f56d687e5c8ca6c65577c03fe8f5cc1f9ba1b73b7fd11e6aa561f81551529aa.png)  
 
-##### Add Logging
+#### Add Logging
+
+In order to add Logging, we need to add a Logging provider. In this case I am going to add the Debug Logging, but just as easy, other logging providers can be added in a similar way.
 
 Add a NuGet package reference to `Microsoft.Extensions.Logging.Debug`.
 
@@ -559,7 +568,13 @@ Run the application and logging information will be shown in the Output window.
 
 ![Logging Information](images/725f4831a774fa58cba6c03c62e3754b9e8d7e6834b23f98c248b1ccfb584a8c.png)  
 
+## Conclusion
+
+We barely scratched the surface of what is possible in the MauiProgram class, and demoed some of the most common usages of it. To learn more, follow the links in the Resources section down below.
+
 ## Complete Code
+
+The complete code for this demo can be found in the link below.
 
 - <https://github.com/payini/MauiProgram>
 
