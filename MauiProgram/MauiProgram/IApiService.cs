@@ -2,6 +2,6 @@
 {
     public interface IApiService
     {
-        string GetDonuts();
+        string GetTestData();
     }
 }

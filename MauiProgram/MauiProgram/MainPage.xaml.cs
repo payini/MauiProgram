@@ -20,7 +20,7 @@ public partial class MainPage : ContentPage
 	{
 		_logger.LogInformation("OnGetDataClicked called.");
 
-		CounterLabel.Text = $"Donut Data: {_apiService?.GetDonuts()}";
+		CounterLabel.Text = $"Test Data: {_apiService?.GetTestData()}";
 		SemanticScreenReader.Announce(CounterLabel.Text);
 	}
 }

@@ -1,27 +1,27 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [MAUIProgram](#mauiprogram)
-  - [Prerequisites](#prerequisites)
-    - [Visual Studio 2022 Preview](#visual-studio-2022-preview)
-    - [Mobile Development with .NET Workload](#mobile-development-with-net-workload)
-    - [MAUI Templates Missing](#maui-templates-missing)
-  - [Demo](#demo)
-    - [Create a MAUI Application](#create-a-maui-application)
-    - [MauiProgram.cs](#mauiprogramcs)
-      - [ASP.NET Core Web App and in ASP.NET Core Web API's Program.cs file](#aspnet-core-web-app-and-in-aspnet-core-web-apis-programcs-file)
-      - [.NET MAUI App (Preview) MainProgram.cs file using .NET 6](#net-maui-app-preview-mainprogramcs-file-using-net-6)
-      - [MauiProgram.cs Explained](#mauiprogramcs-explained)
-      - [So, what else can we do in MauiProgram.cs?](#so-what-else-can-we-do-in-mauiprogramcs)
-        - [Hosting Extension Methods](#hosting-extension-methods)
-        - [Services, Logging and Configuration](#services-logging-and-configuration)
-      - [Adding a Service](#adding-a-service)
-      - [Consuming a Service](#consuming-a-service)
-      - [Add Logging](#add-logging)
-  - [Conclusion](#conclusion)
-  - [Complete Code](#complete-code)
-  - [Resources](#resources)
+	- [Introduction](#introduction)
+	- [MAUIProgram](#mauiprogram)
+	- [Prerequisites](#prerequisites)
+		- [Visual Studio 2022 Preview](#visual-studio-2022-preview)
+		- [Mobile Development with .NET Workload](#mobile-development-with-net-workload)
+		- [MAUI Templates Missing](#maui-templates-missing)
+	- [Demo](#demo)
+		- [Create a MAUI Application](#create-a-maui-application)
+		- [MauiProgram.cs](#mauiprogramcs)
+			- [ASP.NET Core Web App and in ASP.NET Core Web API's Program.cs file](#aspnet-core-web-app-and-in-aspnet-core-web-apis-programcs-file)
+			- [.NET MAUI App (Preview) MainProgram.cs file using .NET 6](#net-maui-app-preview-mainprogramcs-file-using-net-6)
+			- [MauiProgram.cs Explained](#mauiprogramcs-explained)
+			- [So, what else can we do in MauiProgram.cs?](#so-what-else-can-we-do-in-mauiprogramcs)
+				- [Hosting Extension Methods](#hosting-extension-methods)
+				- [Services, Logging and Configuration](#services-logging-and-configuration)
+			- [Adding a Service](#adding-a-service)
+			- [Consuming a Service](#consuming-a-service)
+			- [Add Logging](#add-logging)
+	- [Conclusion](#conclusion)
+	- [Complete Code](#complete-code)
+	- [Resources](#resources)
 
 ## Introduction
 
@@ -302,41 +302,16 @@ You can also register Services, Logging and Configuration via each of those prop
 
 #### Adding a Service
 
-Let's imagine we need an service that calls some API to get some donuts data. Let's add a file `ApiService.cs` and simply return some Json hard-coded data.
+Let's imagine we need an service that calls some API to get some test data. Let's add a file `ApiService.cs` and simply return some Json hard-coded data.
 
 ```csharp
 namespace MauiProgram
 {
     public class ApiService : IApiService
     {
-        public string GetDonuts()
+        public string GetTestData()
         {
-			return @"{
-						""id"": 0001,
-						""type"": ""donut"",
-						""name"": ""Cake"",
-						""ppu"": 0.55,
-						""batters"":
-							{
-								""batter"":
-									[
-										{ ""id"": 1001, ""type"": ""Regular"" },
-										{ ""id"": 1002, ""type"": ""Chocolate"" },
-										{ ""id"": 1003, ""type"": ""Blueberry"" },
-										{ ""id"": 1004, ""type"": ""Devil's Food"" }
-									]
-							},
-						""topping"":
-							[
-								{ ""id"": 5001, ""type"": ""None"" },
-								{ ""id"": 5002, ""type"": ""Glazed"" },
-								{ ""id"": 5005, ""type"": ""Sugar"" },
-								{ ""id"": 5007, ""type"": ""Powdered Sugar"" },
-								{ ""id"": 5006, ""type"": ""Chocolate with Sprinkles"" },
-								{ ""id"": 5003, ""type"": ""Chocolate"" },
-								{ ""id"": 5004, ""type"": ""Maple"" }
-							]
-					}".Replace("\t", string.Empty).Replace("\r\n", string.Empty);
+			return @"Test data simulating an API call.";
         }
     }
 }
@@ -418,7 +393,7 @@ Remove the image from `MainPage.xaml` and repurpose the Counter button.
                 HorizontalOptions="Center" />
 
             <Label 
-                Text="Donut Data: "
+                Text="Test Data: "
                 FontSize="18"
                 x:Name="CounterLabel"
                 HorizontalOptions="Center" />
@@ -455,7 +430,7 @@ public partial class MainPage : ContentPage
 
     private void OnGetDataClicked(object sender, EventArgs e)
 	{
-		CounterLabel.Text = $"Donut Data: {_apiService?.GetDonuts()}";
+		CounterLabel.Text = $"Test Data: {_apiService?.GetTestData()}";
 
 		SemanticScreenReader.Announce(CounterLabel.Text);
 	}
@@ -470,7 +445,7 @@ Now you can run the application and see how the ApiService gets injected and can
 
 The application displays the data after the Click me button is pressed.
 
-![Get Data](images/9f56d687e5c8ca6c65577c03fe8f5cc1f9ba1b73b7fd11e6aa561f81551529aa.png)  
+![Get Data](images/52e6f328e1f7d6b53e25539c99f7807f456c269f705c83469338ceae9947a2fc.png)  
 
 #### Add Logging
 
@@ -558,7 +533,7 @@ public partial class MainPage : ContentPage
 	{
 		_logger.LogInformation("OnGetDataClicked called.");
 
-		CounterLabel.Text = $"Donut Data: {_apiService?.GetDonuts()}";
+		CounterLabel.Text = $"Test Data: {_apiService?.GetTestData()}";
 		SemanticScreenReader.Announce(CounterLabel.Text);
 	}
 }

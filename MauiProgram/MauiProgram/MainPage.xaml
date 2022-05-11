@@ -20,7 +20,7 @@
                 HorizontalOptions="Center" />
 
             <Label 
-                Text="Donut Data: "
+                Text="Test Data: "
                 FontSize="18"
                 x:Name="CounterLabel"
                 HorizontalOptions="Center" />
