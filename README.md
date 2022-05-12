@@ -20,6 +20,7 @@
 			- [Consuming a Service](#consuming-a-service)
 			- [Add Logging](#add-logging)
 			- [Configure Animations](#configure-animations)
+			- [Register Handlers](#register-handlers)
 	- [Conclusion](#conclusion)
 	- [Complete Code](#complete-code)
 	- [Resources](#resources)
@@ -616,6 +617,32 @@ However, there are two lessons to be learned here:
 
 2. It may be easier than you thought, to go ahead and explore open-source code, and see how things are made of to understand things better, or even contribute to it. You may find out you can contribute more than you thought.
 
+#### Register Handlers
+
+In order to register your own handlers, call the `ConfigureMauiHandlers` method on the `MauiAppBuilder` object. Then, on the `IMauiHandlersCollection` object, call the AddHandler method to add the required handler.
+
+Add the following code to MauiProgram.cs:
+
+```csharp
+			// Configure MAUI Handlers
+			.ConfigureMauiHandlers(handlers =>
+			{
+				handlers.AddHandler(typeof(MyViewType), typeof(MyViewTypeHandler));
+			})
+```
+
+Now go ahead and create `MyViewType` using the refactoring tools:
+
+![Create MyViewType](images/ddb45af306f0b919e0aa5f2e716833309eaf5f5495ec682cf548bf4fca74c1de.png)  
+
+Then go ahead and create `MyViewTypeHandler`, also using the refactoring tools:
+
+![Create MyViewTypeHandler](images/7a79082d31ce157c6dc8c7b886a926a3a8b45fb6cdb96e78ee10a1477de3703c.png)
+
+Then, the `MyViewTypeHandler` handler is registered against the `MyViewType` control. Therefore, any instances of the MyViewType control will be handled by the MyViewTypeHandler.
+
+In there, you can add any handler code, to customize things for instance, the background color of all controls just for Android for instances, or remove underlines for Android, etc.
+
 ## Conclusion
 
 We barely scratched the surface of what is possible in the MauiProgram class, and demoed some of the most common usages of it. To learn more, follow the links in the Resources section down below.
@@ -635,3 +662,4 @@ The complete code for this demo can be found in the link below.
 | Configure fonts, services, and handlers at startup | https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a                           |
 | .NET Generic Host                                  | https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host                                                                     |
 | Configure Animations                               | https://github.com/dotnet/maui/blob/3717ce0d385d1aadbd3b9795c203d438426aae17/src/Core/src/Hosting/Animations/AppHostBuilderExtensions.cs |
+| Customize controls with handlers                   | https://docs.microsoft.com/en-us/dotnet/maui/user-interface/handlers/customize?msclkid=43512179d0f711ecbf2aa7647c70b84e                  |
