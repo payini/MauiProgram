@@ -590,8 +590,8 @@ So I tried, and was successfully creating a Ticker, so I can pass to an Animatio
 		animationManager.Add(animation);
 ```
 
-With this, I was hoping I could create an animation, as we did in out previous episode [MAUI Animation. The .NET Show with Carl Franklin Ep 20
-](https://www.youtube.com/watch?v=EMXjaSHlvXs&list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_&index=20&t=43s), and assign it to the `Animation` object above to be reused, but that's as far as the effort went. I was not able to create an actual animation and assign it to the `Animation` object.
+With this, I was hoping I could create an animation, as we did in our previous episode [MAUI Animation. The .NET Show with Carl Franklin Ep 20
+](https://www.youtube.com/watch?v=EMXjaSHlvXs&list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_&index=20&t=43s), and assign it to the `Animation` object above to be reused, but that is as far as the effort went. I was not able to create an actual animation and assign it to the `Animation` object.
 
 I wanted to add a "WiggleAnimation" to the `CounterLabel` with the following code: 
 
@@ -606,11 +606,13 @@ I wanted to add a "WiggleAnimation" to the `CounterLabel` with the following cod
 		CounterLabel.RotateTo(0, 50);
 ```
 
-But I was not able to make anything useful out of it.
+You may want to still add that code at the end of `OnGetDataClicked` inside `MainPage.xaml.cs` to see what it does.
 
-So, there are two lessons learned here:
+At the end, I was not able to make anything useful out of it.
 
-1. Either `ConfigureAnimations`, `AnimationManager` and `Animation` objects are used internally, and do not meant to give us animation capabilities, or we still have more things to wait for regarding the development of MAUI, (we will just need to wait and see,) and
+However, there are two lessons to be learned here:
+
+1. Either `ConfigureAnimations`, `AnimationManager` and `Animation` objects are used internally, and do not meant to give us animation capabilities, or we still have more things to wait for and learn regarding the development of MAUI, (we will just need to wait and see,) and
 
 2. It may be easier than you thought, to go ahead and explore open-source code, and see how things are made of to understand things better, or even contribute to it. You may find out you can contribute more than you thought.
 
@@ -626,10 +628,10 @@ The complete code for this demo can be found in the link below.
 
 ## Resources
 
-| Resource Title                                     | Url                                                                                                            |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wcontainergW_PqzZ9USrHvvnk8JMQy_>                                     |
-| MAUI Templates Missing                             | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>                          |
-| Configure fonts, services, and handlers at startup | https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a |
-| .NET Generic Host                                  | https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host                                           |
-|Configure Animations|https://github.com/dotnet/maui/blob/3717ce0d385d1aadbd3b9795c203d438426aae17/src/Core/src/Hosting/Animations/AppHostBuilderExtensions.cs|
+| Resource Title                                     | Url                                                                                                                                      |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wcontainergW_PqzZ9USrHvvnk8JMQy_>                                                      |
+| MAUI Templates Missing                             | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>                                                    |
+| Configure fonts, services, and handlers at startup | https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a                           |
+| .NET Generic Host                                  | https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host                                                                     |
+| Configure Animations                               | https://github.com/dotnet/maui/blob/3717ce0d385d1aadbd3b9795c203d438426aae17/src/Core/src/Hosting/Animations/AppHostBuilderExtensions.cs |
