@@ -19,6 +19,7 @@
 			- [Adding a Service](#adding-a-service)
 			- [Consuming a Service](#consuming-a-service)
 			- [Add Logging](#add-logging)
+			- [Configure Animations](#configure-animations)
 	- [Conclusion](#conclusion)
 	- [Complete Code](#complete-code)
 	- [Resources](#resources)
@@ -543,6 +544,76 @@ Run the application and logging information will be shown in the Output window.
 
 ![Logging Information](images/725f4831a774fa58cba6c03c62e3754b9e8d7e6834b23f98c248b1ccfb584a8c.png)  
 
+#### Configure Animations
+
+After quite some research, I was not able to find any information as of what does `ConfigureAnimations` do or needed for, so I ended up going straight to the code, after all, MAUI is open-source right?
+
+In matter of seconds, I found the code for the extension method `ConfigureAnimations`, and it looks like this:
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Maui.Animations;
+
+#if __ANDROID__
+using Microsoft.Maui.Platform;
+#endif
+
+namespace Microsoft.Maui.Hosting
+{
+	public static partial class AppHostBuilderExtensions
+	{
+		public static MauiAppBuilder ConfigureAnimations(this MauiAppBuilder builder)
+		{
+#if __ANDROID__
+			builder.Services.TryAddSingleton<IEnergySaverListenerManager>(svcs => new EnergySaverListenerManager());
+			builder.Services.TryAddScoped<ITicker>(svcs => new PlatformTicker(svcs.GetRequiredService<IEnergySaverListenerManager>()));
+#else
+			builder.Services.TryAddScoped<ITicker>(svcs => new PlatformTicker());
+#endif
+			builder.Services.TryAddScoped<IAnimationManager>(svcs => new AnimationManager(svcs.GetRequiredService<ITicker>()));
+
+			return builder;
+		}
+	}
+}
+```
+
+From there you can determine that all the code is doing is, adding a service called `AnimationManager`, just as we did in our previous [Adding a Service](#adding-a-service) example,  which requires a Ticker, (a `PlatformTicker` to be exact,) and in the case of Android devices, the Ticker requires a `EnergySaverListenerManager`.
+
+So I tried, and was successfully creating a Ticker, so I can pass to an AnimationManager, which I gave it an Animation object that I created, as shown below:
+
+```csharp
+        var ticker = new Ticker();
+		var animationManager = new AnimationManager(ticker);
+        var animation = new Microsoft.Maui.Controls.Animation();		
+		animationManager.Add(animation);
+```
+
+With this, I was hoping I could create an animation, as we did in out previous episode [MAUI Animation. The .NET Show with Carl Franklin Ep 20
+](https://www.youtube.com/watch?v=EMXjaSHlvXs&list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_&index=20&t=43s), and assign it to the `Animation` object above to be reused, but that's as far as the effort went. I was not able to create an actual animation and assign it to the `Animation` object.
+
+I wanted to add a "WiggleAnimation" to the `CounterLabel` with the following code: 
+
+```csharp
+		CounterLabel.Animate("WiggleAnimation", animation);
+
+		// Wiggle animation
+		CounterLabel.RotateTo(1, 100);
+		await CounterLabel.ScaleTo(1.05, 100);
+		await CounterLabel.ScaleTo(1, 100);
+		await CounterLabel.RotateTo(-2, 100);
+		CounterLabel.RotateTo(0, 50);
+```
+
+But I was not able to make anything useful out of it.
+
+So, there are two lessons learned here:
+
+1. Either `ConfigureAnimations`, `AnimationManager` and `Animation` objects are used internally, and do not meant to give us animation capabilities, or we still have more things to wait for regarding the development of MAUI, (we will just need to wait and see,) and
+
+2. It may be easier than you thought, to go ahead and explore open-source code, and see how things are made of to understand things better, or even contribute to it. You may find out you can contribute more than you thought.
+
 ## Conclusion
 
 We barely scratched the surface of what is possible in the MauiProgram class, and demoed some of the most common usages of it. To learn more, follow the links in the Resources section down below.
@@ -557,7 +628,8 @@ The complete code for this demo can be found in the link below.
 
 | Resource Title                                     | Url                                                                                                            |
 | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_>                                     |
+| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wcontainergW_PqzZ9USrHvvnk8JMQy_>                                     |
 | MAUI Templates Missing                             | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>                          |
 | Configure fonts, services, and handlers at startup | https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a |
 | .NET Generic Host                                  | https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host                                           |
+|Configure Animations|https://github.com/dotnet/maui/blob/3717ce0d385d1aadbd3b9795c203d438426aae17/src/Core/src/Hosting/Animations/AppHostBuilderExtensions.cs|
