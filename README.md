@@ -55,7 +55,7 @@ In my case, I already have [Visual Studio 2022 Preview](https://visualstudio.mic
 
 ### Mobile Development with .NET Workload
 
-If you have been following [The .NET Show](https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_) you know that in order to build MAUI apps, the Mobile Development with .NET Workload workload needs to be installed, as well as the .NET MAUI (Preview), so if you do not have that installed you can do that now.
+If you have been following [The .NET Show](https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_) you know that in order to build MAUI apps, the Mobile Development with .NET workload needs to be installed, as well as the .NET MAUI (Preview), so if you do not have that installed you can do that now.
 
 ![Mobile Development with .NET Workload](images/ecad71fd4493d0cfcd86e932e21abfe7f483422e0d5e44491d2fc8f226b8b797.png)  
 
