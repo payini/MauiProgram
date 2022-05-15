@@ -657,7 +657,7 @@ The complete code for this demo can be found in the link below.
 
 | Resource Title                                     | Url                                                                                                                                      |
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wcontainergW_PqzZ9USrHvvnk8JMQy_>                                                      |
+| The .NET Show with Carl Franklin                   | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_>                                                               |
 | MAUI Templates Missing                             | <https://github.com/dotnet/maui/issues/5355?msclkid=6320df98ce5011ec9343dac76b4764f4>                                                    |
 | Configure fonts, services, and handlers at startup | https://docs.microsoft.com/en-us/dotnet/maui/fundamentals/app-startup?msclkid=932cab7dce7511ec85837ed885f1ad6a                           |
 | .NET Generic Host                                  | https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host                                                                     |
